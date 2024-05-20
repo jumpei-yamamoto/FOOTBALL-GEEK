@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>League Teams</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .selected {
+        background-color: rgb(255, 156, 155);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-white shadow">
+      <div class="container mx-auto p-4 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold">League Teams</h1>
+          <nav class="flex space-x-4 mt-4">
+            {% for league_id, league_name in leagues.items() %}
+            <a
+              href="/?competition_id={{ league_id }}"
+              class="p-2 {{ 'selected' if selected_competition == league_id else '' }}"
+            >
+              {{ league_name }}
+            </a>
+            {% endfor %}
+          </nav>
+        </div>
+        <a
+          href="/schedule?competition_id={{ selected_competition }}"
+          class="text-blue-500 hover:underline"
+          >Match Schedule</a
+        >
+      </div>
+    </header>
+    <div class="container mx-auto mt-8">
+      <div class="grid grid-cols-4 gap-4">
+        {% for team in teams %}
+        <div class="bg-white shadow rounded-lg p-4 text-center">
+          <a href="/team/{{ team.id }}">
+            <img
+              src="{{ team.crest }}"
+              alt="{{ team.name }} Logo"
+              class="w-24 h-24 mx-auto"
+            />
+            <h2 class="text-lg font-bold mt-2">{{ team.name }}</h2>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

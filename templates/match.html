@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div
+      class="flex items-center justify-center min-h-screen bg-cover bg-center relative"
+      style="background-image: url('/static/champions_league.jpeg')"
+    >
+      <div
+        class="w-full max-w-lg bg-white bg-opacity-70 p-5 rounded shadow-lg text-center"
+      >
+        <h1 class="text-lg font-bold mb-2">SCOREBOARD</h1>
+        <p id="match-time"></p>
+        <div class="flex justify-between mt-5">
+          <div>
+            <p class="text-sm">LOCAL TEAM</p>
+            <img
+              id="home-team-logo"
+              class="w-24 h-24 mx-auto"
+              alt="Home Team Logo"
+            />
+          </div>
+          <div id="score" class="text-3xl font-bold"></div>
+          <div>
+            <p class="text-sm">VISITOR TEAM</p>
+            <img
+              id="away-team-logo"
+              class="w-24 h-24 mx-auto"
+              alt="Away Team Logo"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-[250px] h-[500px] bg-white bg-opacity-75 p-4 rounded shadow-lg absolute bottom-10 right-10 flex flex-col"
+      >
+        <div id="chat-box" class="flex-grow overflow-y-auto mb-4"></div>
+        <div class="flex">
+          <input
+            type="text"
+            id="chat-input"
+            class="p-2 border rounded w-full mr-2"
+            placeholder="Type your message..."
+          />
+          <button id="send-button" class="p-2 bg-blue-500 text-white rounded">
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const homeTeamLogo = urlParams.get("homeTeamLogo");
+        const awayTeamLogo = urlParams.get("awayTeamLogo");
+        const score = urlParams.get("score");
+        const time = urlParams.get("time");
+
+        document.getElementById("home-team-logo").src = homeTeamLogo;
+        document.getElementById("away-team-logo").src = awayTeamLogo;
+        document.getElementById("score").textContent = score;
+        document.getElementById("match-time").textContent = time;
+
+        const chatMessages = [
+          { id: 1, text: "Hello!", user: "other" },
+          { id: 2, text: "Go team!", user: "me" },
+          { id: 3, text: "Great goal!", user: "other" },
+        ];
+
+        const chatBox = document.getElementById("chat-box");
+        const chatInput = document.getElementById("chat-input");
+        const sendButton = document.getElementById("send-button");
+
+        const renderChatMessages = () => {
+          chatBox.innerHTML = chatMessages
+            .map(
+              (msg) => `
+          <div class="mb-2 ${msg.user === "me" ? "text-right" : "text-left"}">
+            <p class="inline-block p-2 rounded ${
+              msg.user === "me" ? "bg-blue-300" : "bg-gray-300"
+            }">${msg.text}</p>
+          </div>
+        `
+            )
+            .join("");
+          chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        const createText = async (text) => {
+          let divText = document.createElement("div");
+          divText.id = "text" + chatMessages.length;
+          divText.style.position = "fixed";
+          divText.style.whiteSpace = "nowrap";
+          divText.style.fontSize = "5rem"; // text-5xl equivalent
+          divText.style.left = document.documentElement.clientWidth + "px";
+          divText.style.top = "0"; // Top of the screen
+          divText.style.color = "white";
+          divText.style.textShadow = "2px 2px 4px rgba(0, 0, 0, 0.5)";
+          divText.appendChild(document.createTextNode(text));
+          document.body.appendChild(divText);
+
+          await gsap.to("#" + divText.id, {
+            duration: 5,
+            x:
+              -1 * (document.documentElement.clientWidth + divText.clientWidth),
+          });
+          divText.parentNode.removeChild(divText);
+        };
+
+        sendButton.addEventListener("click", () => {
+          if (chatInput.value.trim() !== "") {
+            const newMessage = {
+              id: chatMessages.length + 1,
+              text: chatInput.value,
+              user: "me",
+            };
+            chatMessages.push(newMessage);
+            chatInput.value = "";
+            renderChatMessages();
+            createText(newMessage.text); // コメントを流す
+          }
+        });
+
+        renderChatMessages();
+      });
+    </script>
+  </body>
+</html>

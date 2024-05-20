@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match Schedule</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-white shadow">
+      <div class="container mx-auto p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Match Schedule</h1>
+        <a href="/" class="text-blue-500 hover:underline">Home</a>
+      </div>
+    </header>
+    <div class="container mx-auto mt-8">
+      <div class="bg-white shadow rounded-lg p-4 text-center mb-8">
+        <div class="flex justify-between items-center mb-4">
+          <a
+            href="/schedule?competition_id={{ competition_id }}&week_offset={{ week_offset - 1 }}"
+            class="text-blue-500 hover:underline"
+            >&lt; Previous Week</a
+          >
+          <div>
+            <h2 class="text-lg font-bold mt-2">Matches for this Week</h2>
+            <p class="text-sm text-gray-500">
+              {{ start_date }} to {{ end_date }}
+            </p>
+          </div>
+          <a
+            href="/schedule?competition_id={{ competition_id }}&week_offset={{ week_offset + 1 }}"
+            class="text-blue-500 hover:underline"
+            >Next Week &gt;</a
+          >
+        </div>
+        <div class="grid grid-cols-1 gap-4 mt-4">
+          {% for match in matches %}
+          <a
+            href="/match/{{ match.id }}?homeTeamLogo={{ match.homeTeam.crest }}&awayTeamLogo={{ match.awayTeam.crest }}&score={{ match.score.fullTime.homeTeam }}-{{ match.score.fullTime.awayTeam }}&time={{ match.utcDate }}"
+            class="bg-gray-100 shadow rounded-lg p-4 flex items-center justify-between hover:bg-gray-200 transition duration-200"
+          >
+            <div class="w-1/4 text-left">
+              <img
+                src="{{ match.homeTeam.crest }}"
+                alt="{{ match.homeTeam.name }} Logo"
+                class="w-16 h-16"
+              />
+            </div>
+            <div class="w-1/2 text-center">
+              <p><strong>{{ match.utcDate }}</strong></p>
+              <p>
+                <strong>
+                  {% if match.score.fullTime.homeTeam is not none and
+                  match.score.fullTime.awayTeam is not none %} {{
+                  match.score.fullTime.homeTeam }} - {{
+                  match.score.fullTime.awayTeam }} {% else %} - {% endif %}
+                </strong>
+              </p>
+              {% if match.hasJapanesePlayer %}
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png"
+                alt="Japan Flag"
+                class="w-6 h-6 inline"
+              />
+              {% endif %}
+            </div>
+            <div class="w-1/4 text-right">
+              <img
+                src="{{ match.awayTeam.crest }}"
+                alt="{{ match.awayTeam.name }} Logo"
+                class="w-16 h-16"
+              />
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

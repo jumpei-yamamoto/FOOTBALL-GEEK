@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Information</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-white shadow">
+      <div class="container mx-auto p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">{{ team.name }} Information</h1>
+        <a href="/" class="text-blue-500 hover:underline">Home</a>
+      </div>
+    </header>
+    <div class="container mx-auto mt-8">
+      <!-- Team Information Card -->
+      <div class="bg-white shadow rounded-lg p-4 text-center mb-8">
+        <img
+          src="{{ team.crest }}"
+          alt="{{ team.name }} Logo"
+          class="w-24 h-24 mx-auto"
+        />
+        <h2 class="text-lg font-bold mt-2">{{ team.name }}</h2>
+        <p><strong>Venue:</strong> {{ team.venue }}</p>
+        <p>
+          <strong>Website:</strong>
+          <a href="{{ team.website }}" target="_blank">{{ team.website }}</a>
+        </p>
+        <h3 class="text-xl font-bold mt-4">Running Competitions</h3>
+        <div class="flex justify-center mt-2 space-x-4">
+          {% for competition in team.runningCompetitions %}
+          <div class="text-center">
+            <img
+              src="{{ competition.emblem }}"
+              alt="{{ competition.name }} Emblem"
+              class="w-12 h-12 mx-auto"
+            />
+            <span class="text-lg font-bold">{{ competition.name }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- Coach Information Card -->
+      <div class="bg-white shadow rounded-lg p-4 text-center mb-8">
+        <h3 class="text-xl font-bold mt-4">Coach</h3>
+        <div
+          class="bg-gray-100 shadow rounded-lg p-4 flex items-center justify-center"
+        >
+          <div class="flex-shrink-0">
+            <img
+              src="{{ team.coach.image }}"
+              alt="{{ team.coach.name }}"
+              class="w-24 h-24"
+            />
+          </div>
+          <div class="ml-4 text-left">
+            <p><strong>Name:</strong> {{ team.coach.name }}</p>
+            <p><strong>Nationality:</strong> {{ team.coach.nationality }}</p>
+            <p>
+              <strong>Contract Until:</strong> {{ team.coach.contract.until }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Squad Information Card -->
+      <div class="bg-white shadow rounded-lg p-4 text-center">
+        <h3 class="text-xl font-bold mt-4">Player</h3>
+        <div class="grid grid-cols-2 gap-4 mt-2">
+          {% for player in team.squad %}
+          <div class="bg-gray-100 shadow rounded-lg p-4 flex items-center">
+            <div class="flex-shrink-0">
+              <img
+                src="{{ player.image }}"
+                alt="{{ player.name }}"
+                class="w-24 h-24"
+              />
+            </div>
+            <div class="ml-4 text-left">
+              <p><strong>Name:</strong> {{ player.name }}</p>
+              <p><strong>Position:</strong> {{ player.position }}</p>
+              <p><strong>Nationality:</strong> {{ player.nationality }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
