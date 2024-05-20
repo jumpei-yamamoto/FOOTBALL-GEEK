@@ -1,0 +1,16 @@
+.
+├── api
+│   ├── app.py
+│   ├── requirements.txt
+│   └── vercel.json
+├── folder.txt
+├── memo.txt
+├── static
+│   └── champions_league.jpeg
+└── templates
+    ├── league-info.html
+    ├── match.html
+    ├── schedule.html
+    └── team-info.html
+
+3 directories, 10 files

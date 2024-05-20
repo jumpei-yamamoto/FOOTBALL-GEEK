@@ -1,11 +1,16 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pytz
+import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+load_dotenv()
 
-API_TOKEN = 'f9f35460d1164a5dbf2fdf92599da595'
+# Flask インスタンスの作成時に、テンプレートフォルダと静的ファイルフォルダを正しく指定
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
+
+API_TOKEN = os.environ.get('API_TOKEN')
 
 def get_teams_in_league(competition_id):
     url = f"https://api.football-data.org/v4/competitions/{competition_id}/teams"
