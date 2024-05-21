@@ -39,7 +39,7 @@
         <div class="grid grid-cols-1 gap-4 mt-4">
           {% for match in matches %}
           <a
-            href="/match/{{ match.id }}?homeTeamLogo={{ match.homeTeam.crest }}&awayTeamLogo={{ match.awayTeam.crest }}&score={{ match.score.fullTime.homeTeam }}-{{ match.score.fullTime.awayTeam }}&time={{ match.utcDate }}"
+            href="/match/{{ match.id }}?homeTeamLogo={{ match.homeTeam.crest }}&awayTeamLogo={{ match.awayTeam.crest }}&score={{ match.score.fullTime.home }}-{{ match.score.fullTime.away }}&time={{ match.utcDate }}"
             class="bg-gray-100 shadow rounded-lg p-4 flex items-center justify-between hover:bg-gray-200 transition duration-200"
           >
             <div class="w-1/4 text-left">
@@ -53,10 +53,10 @@
               <p><strong>{{ match.utcDate }}</strong></p>
               <p>
                 <strong>
-                  {% if match.score.fullTime.homeTeam is not none and
-                  match.score.fullTime.awayTeam is not none %} {{
-                  match.score.fullTime.homeTeam }} - {{
-                  match.score.fullTime.awayTeam }} {% else %} - {% endif %}
+                  {% if match.score.fullTime.home is not none and
+                  match.score.fullTime.away is not none %} {{
+                  match.score.fullTime.home }} - {{ match.score.fullTime.away }}
+                  {% else %} - {% endif %}
                 </strong>
               </p>
               {% if match.hasJapanesePlayer %}
